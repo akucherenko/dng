@@ -9,12 +9,15 @@
 
     <script src="js/file-spot.js"></script>
     <script src="js/file-collector.js"></script>
+    <script src="js/dng-metadata-parser.js"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         var fileSpot  = new FileSpot(),
-            collector = new FileCollector();
+            collector = new FileCollector(),
+            mdParser  = new DngMetadataParser();
         fileSpot.setOn(document.body);
         fileSpot.attachObserver(collector.newObserver());
+        collector.setMetadataParser('image/x-adobe-dng', mdParser);
     });
     </script>
 </body>

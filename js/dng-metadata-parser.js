@@ -1,0 +1,3 @@
+function DngMetadataParser() {
+    return this;
+}
