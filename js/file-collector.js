@@ -35,7 +35,8 @@ FileCollector.prototype.notify = function (file) {
         console.debug("Starting parser...");
 
 
-        parser.readMetadata(byteData);
+        parser.setFile(byteData);
+        parser.readMetadata();
     };
 
     reader.readAsArrayBuffer(file);
