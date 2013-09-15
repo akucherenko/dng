@@ -1,6 +1,7 @@
 function DngMetadataParser(tagFactory) {
     this.tagFactory = tagFactory;
     this.fileData   = null;
+    this.callback   = function(tags) {};
     return this;
 }
 DngMetadataParser.prototype.setFile = function(byteData) {
@@ -21,4 +22,9 @@ DngMetadataParser.prototype.readMetadata = function() {
             tags.push(tag);
         }
     }
+
+    this.callback(tags);
+}
+DngMetadataParser.prototype.whenReady = function(callback) {
+    this.callback = callback;
 }

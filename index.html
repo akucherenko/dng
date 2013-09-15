@@ -16,10 +16,28 @@
         var fileSpot   = new FileSpot(),
             collector  = new FileCollector(),
             tagFactory = new IFDTagFactory(),
-            mdParser   = new DngMetadataParser(tagFactory);
-        fileSpot.setOn(document.body);
+            mdParser   = new DngMetadataParser(tagFactory),
+            docBody    = document.body;
+        fileSpot.setOn(docBody);
         fileSpot.attachObserver(collector.newObserver());
-        collector.setMetadataParser('image/x-adobe-dng', mdParser);
+        collector.setMetadataParser("image/x-adobe-dng", mdParser);
+        mdParser.whenReady(function (tags) {
+            var tagList = document.createElement("DL"),
+                oldList = docBody.getElementsByTagName("DL");
+            if (oldList.length) {
+                docBody.removeChild(oldList[0]);
+            }
+            for (var i = 0; i < tags.length; i ++) {
+                var dt = document.createElement("DT"),
+                    dd = document.createElement("DD"),
+                    tag = tags[i];
+                dt.appendChild(document.createTextNode(tag.name));
+                dd.appendChild(document.createTextNode(tag.value.toString()));
+                tagList.appendChild(dt);
+                tagList.appendChild(dd);
+            }
+            docBody.appendChild(tagList);
+        });
     });
     </script>
 </body>
