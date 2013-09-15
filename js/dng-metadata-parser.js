@@ -8,7 +8,8 @@ DngMetadataParser.prototype.setFile = function(byteData) {
 }
 DngMetadataParser.prototype.readMetadata = function() {
     var ifdOffset = this.fileData.getInt32(4),
-        ifdRecordCount = this.fileData.getUint16(ifdOffset);
+        ifdRecordCount = this.fileData.getUint16(ifdOffset),
+        tags = [];
 
     console.debug(this.fileData.getInt8(ifdOffset));
     console.debug("IFD record count: ", ifdRecordCount);
@@ -16,6 +17,8 @@ DngMetadataParser.prototype.readMetadata = function() {
     for (var i = 0, offset = ifdOffset + 2; i < ifdRecordCount; i ++) {
         var tag = this.tagFactory.readTag(this.fileData, offset);
         offset += 12;
-        console.log(tag);
+        if (tag) {
+            tags.push(tag);
+        }
     }
 }
