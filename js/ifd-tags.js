@@ -18,7 +18,14 @@ IFDTagFactory.prototype.readTag = function(fileData, tagOffset) {
             break;
         case 2:     // ascii, 1b
             valueSize = 1;
-            valueSeeker = function () { return String.fromCharCode(fileData.getUint8(valueOffset)); };
+            valueSeeker = function () { 
+                var bytes = [];
+                for (var i = 0; i < valueCount; i ++) {
+                    bytes.push(String.fromCharCode(fileData.getUint8(valueOffset + i)));
+                }
+                valueCount = 1;
+                return bytes.join("");
+            };
             break;
         case 3:     // short, 2b
             valueSize = 2;
@@ -72,11 +79,6 @@ IFDTagFactory.prototype.readTag = function(fileData, tagOffset) {
             return null;
         }
         valueOffset += valueSize;
-    }
-
-    if (type === 2) { // ASCII
-        // populate string
-        value = [value.join("")];
     }
 
     console.debug("IFD tag #" + tagCode + " of type " + type + "; number of values: " + valueCount + ", offset: " + valueOffset);
