@@ -5,7 +5,7 @@ IFDTagFactory.prototype.readTag = function(fileData, tagOffset) {
     var tagCode = fileData.getUint16(tagOffset),
         type = fileData.getUint16(tagOffset + 2),
         valueCount = fileData.getInt32(tagOffset + 4),
-        valueOffset = tagOffset + 12,
+        valueOffset = tagOffset + 8,
         valueSize = 0,
         value = [],
         valueSeeker = function () { return null; },
@@ -65,13 +65,13 @@ IFDTagFactory.prototype.readTag = function(fileData, tagOffset) {
     valueOffset = fitInFourBytes(valueSize) ? valueOffset : fileData.getUint32(valueOffset);
 
     for (var i = 0; i < valueCount; i ++) {
-        valueOffset += valueSize;
         try {
             value.push(valueSeeker());
         } catch (e) {
             console.error("Failed resolve value on offset " + valueOffset + "; tag #" + tagCode);
             return null;
         }
+        valueOffset += valueSize;
     }
 
     console.debug("IFD tag #" + tagCode + " of type " + type + "; number of values: " + valueCount + ", offset: " + valueOffset);

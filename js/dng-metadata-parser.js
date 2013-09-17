@@ -12,7 +12,6 @@ DngMetadataParser.prototype.readMetadata = function() {
         ifdRecordCount = this.fileData.getUint16(ifdOffset),
         tags = [];
 
-    console.debug(this.fileData.getInt8(ifdOffset));
     console.debug("IFD record count: ", ifdRecordCount);
 
     for (var i = 0, offset = ifdOffset + 2; i < ifdRecordCount; i ++) {
